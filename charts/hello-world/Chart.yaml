@@ -1,6 +1,6 @@
 apiVersion: v2
-name: hello-world-v2
-description: A Helm chart for Kubernetes
+name: hello-world-v3
+description: A Helm chart for Kubernetesx
 
 # A chart can be either an 'application' or a 'library' chart.
 #
