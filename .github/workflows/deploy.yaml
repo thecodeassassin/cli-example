@@ -16,13 +16,10 @@ jobs:
           sym config init ${{ secrets.SYMBIOSIS_API_KEY }}
       - name: Generate our cluster identity file
         run: sym cluster identity $cluster -i /tmp/$cluster
-      - name: Deliverybot Helm Action
-        uses: deliverybot/helm@v1.5.0
+      - uses: azure/setup-helm@v3
         with:
-          release: 'hello-world'
-          namespace: 'default'
-          chart: './charts/hello-world'
-          token: '${{ github.token }}'
-          values: |
-            nameOverride: deployed-using-gh-actions
-          KUBECONFIG_FILE: /tmp/$cluster
+          token: ${{ secrets.GITHUB_TOKEN }}
+        id: install
+      - name: Deploy chart
+        run: |
+          helm upgrade --install --force -f './charts/hello-world' -f override.yaml hello-world './charts/hello-world' --wait --kubeconfig /tmp/$cluster
