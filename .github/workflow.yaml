@@ -1,0 +1,29 @@
+name: Symbiosis CLI Demo
+run-name: ${{ github.actor }} is testing the new Symbiosis CLI 🚀
+on: [push]
+env:
+  cluster: symbiosis-production
+jobs:
+  Deploy-Using-CLI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "🎉 lets start by installing the CLI"
+      - run: |
+          curl -s https://raw.githubusercontent.com/symbiosis-cloud/cli/main/install.sh | sh
+      - name: Authenticate the CLI
+        run: |
+          sym config init ${{ secrets.SYMBIOSIS_API_KEY }}
+      - name: Generate our cluster identity file
+        run: sym cluster identity $cluster -i /tmp/$cluster
+      - name: Deploy the helm chart
+        uses: 'deliverybot/helm@v1'
+        with:
+          release: 'hello-world'
+          namespace: 'default'
+          chart: './charts/hello-world'
+          token: '${{ github.token }}'
+          values: |
+            nameOverride: deployed-using-gh-actions
+          KUBECONFIG_FILE: /tmp/$cluster
