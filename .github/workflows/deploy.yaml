@@ -1,5 +1,4 @@
 name: Symbiosis CLI Demo
-run-name: ${{ github.actor }} is testing the new Symbiosis CLI 🚀
 on: [push]
 env:
   cluster: symbiosis-production
@@ -17,8 +16,8 @@ jobs:
           sym config init ${{ secrets.SYMBIOSIS_API_KEY }}
       - name: Generate our cluster identity file
         run: sym cluster identity $cluster -i /tmp/$cluster
-      - name: Deploy the helm chart
-        uses: 'deliverybot/helm@v1'
+      - name: Deliverybot Helm Action
+        uses: deliverybot/helm@v1.5.0
         with:
           release: 'hello-world'
           namespace: 'default'
