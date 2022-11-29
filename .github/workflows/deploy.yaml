@@ -22,4 +22,4 @@ jobs:
         id: install
       - name: Deploy chart
         run: |
-          helm upgrade --install --force -f './charts/hello-world/hello-world.yaml' hello-world './charts/hello-world' --wait --kubeconfig /tmp/$cluster
+          helm upgrade --install --force -f './charts/hello-world.yaml' hello-world './charts/hello-world' --wait --kubeconfig /tmp/$cluster
